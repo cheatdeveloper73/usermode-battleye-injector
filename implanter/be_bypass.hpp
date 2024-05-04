@@ -320,8 +320,24 @@ namespace be_bypass
 		printf("[~] posting message...\n");
 
 		// spam the fuck out of the message handler
-		for (auto i = 0; i < 50; i++)
-			PostThreadMessageW(window_thread, 0xBE1, 0, 0);
+		for (auto i = 0; i < 5; i++)
+		{
+
+			if (PostThreadMessageW(window_thread, 0xBE1, 0, 0))
+			{
+
+				auto error = GetLastError();
+
+				if (error == ERROR_INVALID_THREAD_ID)
+					return false;
+				else if (error == ERROR_NOT_ENOUGH_QUOTA)
+					break;
+
+			}
+
+			Sleep(350);
+
+		}
 
 		printf("[~] dll implanted\n");
 
